@@ -1,0 +1,27 @@
+clc; clear;
+set(0, 'DefaultTextFontSize',15);
+set(0, 'defaultAxesFontSize',15);
+ 
+%% Load 38 descriptors that was listed for essential oils.
+T = readtable('Fast_text_similarity_matrix.csv','ReadVariableNames', true, 'ReadRowNames', true); %% similarity matrix obtained from Fast-Text model
+ 
+cosine_similarity=T{:,:}; %% returns only numerical data from the original dataset
+
+%# Construct agglomerative clusters
+NUM =5; %% define number of clusters we want to make (in this work we used 4 to 8
+cosdD  = pdist(cosine_similarity,'cosine'); %% returns the distance by using the cosine distance metric
+squareform(cosdD); %% make square form
+clustTreeCos = linkage(cosdD ,'ward'); %% performs clustering by using ward method on cosine similarity metric
+
+IDX = cluster(clustTreeCos, 'maxclust',NUM); %% cluster the data into a maximum of NUM we define. For example, in this case we define, 5. IDX returns maximum 5 clusters 
+cutoff= mean(clustTreeCos(end-NUM+1:end-NUM+2,3)); %% This is the cutoff line for clusters we define by NUM
+
+ %%
+%# visualize the hierarchy of clusters
+figure(1)
+h = dendrogram(clustTreeCos, 0,'Orientation','Reorder','Labels',T.Properties.RowNames, 'colorthreshold',cutoff); %% creates a dendrogram using color-threshold
+vline(cutoff,'b','cutoff for 5 clusters') %% mark the cutoff line vertically using vline function
+set(h, 'LineWidth',1.5)
+xlabel('Cosine Distance')
+title('Using Fasttext Model')
+
