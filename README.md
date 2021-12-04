@@ -5,3 +5,5 @@ Debnath T, Nakamoto T (2020) Predicting human odor perception represented by con
 
 
 1) Pretrained FastText model was used to make cosine similarity matrix of odor descriptors.
+2) Odor Descriptor Hierarchical clustering using cosine similarity matrix from Fast-Text model --MATLAB Code
+Descriptions: After creating the cosine similarity matrix (adj file) using Fast-Text, then use that one to load in this MATLAB code (I renames it as Fast_text_similarity_matrix.csv) to create the hierarchical clustering. It will provide you a vertical Dendrogram of Hierarchical clustering.
